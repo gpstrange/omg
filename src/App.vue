@@ -9,6 +9,11 @@
               <md-icon>edit</md-icon>
             </md-button>
           </router-link>
+          <!-- <router-link v-if="!college" to="/add-college">
+            <md-button class="md-icon-button">
+              <md-icon>add</md-icon>
+            </md-button>
+          </router-link>-->
         </div>
       </md-app-toolbar>
 
@@ -22,6 +27,14 @@
 <script>
 export default {
   name: 'app'
+  // data () {
+  //   return {
+  //     college: ''
+  //   }
+  // },
+  // beforeCreate () {
+  //   this.college = localStorage.getItem('college')
+  // }
 }
 </script>
 

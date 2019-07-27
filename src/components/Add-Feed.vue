@@ -28,7 +28,8 @@ export default {
   methods: {
     onSubmit (event) {
       const payload = {
-        message: this.message
+        message: this.message,
+        createdAt: new Date()
       }
       const college = localStorage.getItem('college')
       axios.post(`https://oh-my-gossip.firebaseio.com/${college}.json`, JSON.stringify(payload))

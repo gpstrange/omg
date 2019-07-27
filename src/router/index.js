@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Feed from '@/components/Feed'
 import AddFeed from '@/components/Add-Feed'
 import SelectCollege from '@/components/Select-College'
+import AddCollege from '@/components/Add-College'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/add-feed',
       name: 'Add-Feed',
       component: AddFeed
+    },
+    {
+      path: '/add-college',
+      name: 'Add-College',
+      component: AddCollege
     }
   ]
 })

@@ -40,8 +40,8 @@ export default {
     }
     axios.get(`https://oh-my-gossip.firebaseio.com/${college}.json`)
       .then(res => {
-        this.gossips = res.data
-        console.log(this.gossips)
+        const keys = Object.keys(res.data)
+        this.gossips = keys.map((key) => res.data[key]).reverse()
       }).catch(e => console.log(e))
   }
 }
