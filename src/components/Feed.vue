@@ -36,7 +36,7 @@ export default {
   created () {
     const college = localStorage.getItem('college')
     if (!college) {
-      this.$router.replace('/')
+      this.$router.back()
     }
     axios.get(`https://oh-my-gossip.firebaseio.com/${college}.json`)
       .then(res => {

@@ -22,7 +22,7 @@ export default {
   beforeCreate () {
     const college = localStorage.getItem('college')
     if (!college) {
-      this.$router.replace('/')
+      this.$router.back()
     }
   },
   methods: {
