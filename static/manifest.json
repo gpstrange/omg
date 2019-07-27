@@ -1,6 +1,6 @@
 {
-  "name": "test",
-  "short_name": "omg",
+  "name": "Oh My Gossip",
+  "short_name": "OMG!",
   "icons": [
     {
       "src": "/static/img/icons/android-chrome-192x192.png",
