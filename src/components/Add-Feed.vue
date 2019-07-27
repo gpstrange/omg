@@ -19,17 +19,21 @@ export default {
   data: () => ({
     message: ''
   }),
+  beforeCreate () {
+    const college = localStorage.getItem('college')
+    if (!college) {
+      this.$router.replace('/')
+    }
+  },
   methods: {
     onSubmit (event) {
-      console.log(11111111111111111111)
       const payload = {
         message: this.message
       }
-      console.log(payload)
-      axios.post('https://ohmygossip-a2876.firebaseio.com/gossips.json', JSON.stringify(payload))
+      const college = localStorage.getItem('college')
+      axios.post(`https://oh-my-gossip.firebaseio.com/${college}.json`, JSON.stringify(payload))
         .then(res => {
-          // console.log(res)
-          this.$router.push('/')
+          this.$router.back()
         })
         .catch(err => console.log(err))
     }

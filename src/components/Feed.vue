@@ -28,12 +28,17 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   data: () => ({
     gossips: []
   }),
   created () {
-    axios.get('https://ohmygossip-a2876.firebaseio.com/gossips.json')
+    const college = localStorage.getItem('college')
+    if (!college) {
+      this.$router.replace('/')
+    }
+    axios.get(`https://oh-my-gossip.firebaseio.com/${college}.json`)
       .then(res => {
         this.gossips = res.data
         console.log(this.gossips)
