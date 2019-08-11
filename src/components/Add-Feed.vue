@@ -9,34 +9,57 @@
         Submit
       </md-button>
     </form>
+    <div>
+      <md-snackbar md-position="center" :md-duration="3000" :md-active.sync="showSnackbar" md-persistent>
+      <span>{{errMessage}}</span>
+    </md-snackbar>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { URL } from '../constants'
 
 export default {
   data: () => ({
-    message: ''
+    message: '',
+    showSnackbar: false,
+    errMessage: ''
   }),
   beforeCreate () {
-    const college = localStorage.getItem('college')
-    if (!college) {
+    const groupId = localStorage.getItem('groupId')
+    if (!groupId) {
       this.$router.back()
     }
   },
   methods: {
     onSubmit (event) {
+      const groupId = localStorage.getItem('groupId')
       const payload = {
+        groupId,
         message: this.message,
         createdAt: new Date()
       }
-      const college = localStorage.getItem('college')
-      axios.post(`https://oh-my-gossip.firebaseio.com/${college}.json`, JSON.stringify(payload))
+      // const college = localStorage.getItem('college')
+      const token = localStorage.getItem('token')
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+      axios.post(URL + '/gossip', payload, options)
         .then(res => {
           this.$router.back()
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          if (err.message) {
+            this.errMessage = err.message
+          } else {
+            this.errMessage = 'Something went wrong'
+          }
+          this.showSnackbar = true
+        })
     }
   }
 }

@@ -1,27 +1,38 @@
 <template>
   <div id="add-feed">
+    <h3 align="center">Choose an unique Group Name!</h3>
     <form>
       <md-field>
-        <label style="font-size: 12px">Name</label>
-        <md-input v-model="college"></md-input>
+        <label style="font-size: 12px">Group Name</label>
+        <md-input v-model="group"></md-input>
       </md-field>
       <!-- <md-field>
         <label style="font-size: 12px">City</label>
         <md-input v-model="city"></md-input>
       </md-field> -->
-      <md-button v-on:click="onSubmit" class="md-accent md-raised">
-        Submit
-      </md-button>
+      <div align="center">
+        <md-button v-on:click="onSubmit" :disabled="group ? false : true" class="md-accent md-raised">
+          Submit
+        </md-button>
+      </div>
     </form>
+    <div>
+      <md-snackbar md-position="center" :md-duration="3000" :md-active.sync="showSnackbar" md-persistent>
+      <span>{{errMessage}}</span>
+    </md-snackbar>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { URL } from '../constants'
 
 export default {
   data: () => ({
-    college: ''
+    group: null,
+    showSnackbar: false,
+    errMessage: ''
   }),
   methods: {
     onSubmit (event) {
@@ -29,15 +40,28 @@ export default {
         message: 'The Group Created',
         createdAt: new Date()
       }
-
-      axios.post(`https://oh-my-gossip.firebaseio.com/colleges.json`, JSON.stringify({name: this.college})).catch(err => console.log(err))
-
-      axios.post(`https://oh-my-gossip.firebaseio.com/${this.college}.json`, JSON.stringify(payload))
-        .then(res => {
-          localStorage.setItem('college', this.college)
+      const token = localStorage.getItem('token')
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+      axios.post(URL + '/group', {name: this.group}, options).then((res) => {
+        console.log(res)
+        payload.groupId = res.data._id
+        localStorage.setItem('groupId', res.data._id)
+        axios.post(URL + '/gossip', payload, options).then(res => {
           this.$router.push('home')
         })
-        .catch(err => console.log(err))
+      }).catch((err) => {
+        console.log(err)
+        if (err.message) {
+          this.errMessage = err.message
+        } else {
+          this.errMessage = 'Something went wrong'
+        }
+        this.showSnackbar = true
+      })
     }
   }
 }

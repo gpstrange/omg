@@ -3,7 +3,8 @@
     <md-app md-mode="reveal">
       <md-app-toolbar class="md-primary">
         <span class="md-title">🤯 Oh My Gossip!!</span>
-        <div class="md-toolbar-section-end">
+        <div class="md-toolbar-section-end" v-if="path && path !== 'login' && path !== 'college'
+        && path !== 'add-college'">
           <router-link to="/add-feed">
             <md-button class="md-icon-button">
               <md-icon>edit</md-icon>
@@ -25,8 +26,15 @@
 </template>
 
 <script>
+
 export default {
-  name: 'app'
+  name: 'app',
+  data: () => ({
+    path: ''
+  }),
+  mounted () {
+    this.path = this.$route.path.replace('/', '')
+  }
   // data () {
   //   return {
   //     college: ''
