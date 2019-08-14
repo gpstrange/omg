@@ -15,11 +15,11 @@
     </md-card-content>
 
     <md-card-actions md-alignment="right">
-      <md-button v-if="item.userLiked" v-on:click="unlike(item)" class="md-accent md-raised" style="margin-right: 5px">
+      <md-button v-if="item.userLiked" v-on:click="unlike(item, index)" class="md-accent md-raised" style="margin-right: 5px">
         <md-icon>thumb_up</md-icon>
         {{item.likesNumber}}
       </md-button>
-      <md-button v-if="!item.userLiked" v-on:click="like(item)" class="md-accent" style="margin-right: 5px">
+      <md-button v-if="!item.userLiked" v-on:click="like(item, index)" class="md-accent" style="margin-right: 5px">
         <md-icon>thumb_up</md-icon>
         {{item.likesNumber}}
       </md-button>
@@ -75,7 +75,7 @@ export default {
     showComments (gossip) {
       this.$router.push({path: 'comments', query: {gossipId: gossip._id}})
     },
-    like (item) {
+    like (item, i) {
       const payload = {
         gossipId: item._id
       }
@@ -88,6 +88,8 @@ export default {
       axios.post(URL + '/like-gossip', payload, options)
         .then(res => {
           item.userLiked = true
+          item.likesNumber = item.likesNumber + 1
+          // this.gossips[i] = res.data.gossip
         }).catch((err) => {
           if (err.message) {
             this.errMessage = err.message
@@ -97,7 +99,7 @@ export default {
           this.showSnackbar = true
         })
     },
-    unlike (item) {
+    unlike (item, i) {
       const payload = {
         gossipId: item._id
       }
@@ -110,6 +112,8 @@ export default {
       axios.post(URL + '/unlike-gossip', payload, options)
         .then(res => {
           item.userLiked = false
+          item.likesNumber = item.likesNumber - 1
+          // this.gossips[i] = res.data.gossip
         }).catch((err) => {
           if (err.message) {
             this.errMessage = err.message

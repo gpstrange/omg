@@ -59,7 +59,6 @@ export default {
   }),
   beforeCreate () {
     const showErr = (err) => {
-      console.log(err)
       if (err.message) {
         this.errMessage = err.message
       } else {
@@ -85,6 +84,9 @@ export default {
   },
   methods: {
     onSubmit () {
+      if (!this.newComment) {
+        return
+      }
       const payload = {
         message: this.newComment,
         gossipId: this.gossip._id
@@ -101,6 +103,7 @@ export default {
           axios.get(URL + '/comment?query={"gossipId":"' + this.gossip._id + '"}&sort=-createdAt', options)
             .then(res => {
               this.comments = res.data
+              this.newComment = ''
             })
         }).catch((err) => {
           console.log(err)

@@ -15,7 +15,7 @@
       </md-select>
     </md-field>
     <div align="center">
-      <md-button class="md-accent md-raised" @click="onSubmit()" :disabled="college ? false : true">Enter</md-button>
+      <md-button class="md-accent md-raised" v-on:click="onSubmit()" :disabled="college ? false : true">Enter</md-button>
       <router-link to="/add-college">
         <md-button class="md-primary md-raised" >Add Group</md-button>
       </router-link>

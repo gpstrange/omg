@@ -43,6 +43,9 @@ export default {
   },
   methods: {
     onSubmit (event) {
+      if (!this.username || !this.password) {
+        return
+      }
       const payload = {
         name: this.username,
         password: this.password

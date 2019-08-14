@@ -5,7 +5,7 @@
         <label style="font-size: 12px">OMG!!🤫</label>
         <md-textarea v-model="message"></md-textarea>
       </md-field>
-      <md-button v-on:click="onSubmit" class="md-accent">
+      <md-button v-on:click="onSubmit" class="md-accent md-raised" >
         Submit
       </md-button>
     </form>
@@ -35,6 +35,9 @@ export default {
   },
   methods: {
     onSubmit (event) {
+      if (!this.message) {
+        return
+      }
       const groupId = localStorage.getItem('groupId')
       const payload = {
         groupId,
