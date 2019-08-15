@@ -25,7 +25,7 @@
       </md-button>
       <md-button class="md-primary" v-on:click="showComments(item)">
         <md-icon>add_comment</md-icon>
-        View Comments
+        Comments {{item.commentsCount}}
       </md-button>
     </md-card-actions>
     </md-card>
