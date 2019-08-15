@@ -2,7 +2,12 @@
   <div id="app">
     <md-app md-mode="reveal">
       <md-app-toolbar class="md-primary">
-        <span class="md-title">🤯 Oh My Gossip!!</span>
+        <span class="md-title">
+          <md-avatar>
+            <img src="static/img/logo.png" alt="Avatar">
+          </md-avatar>
+          Oh My Gossip!!
+        </span>
         <div class="md-toolbar-section-end" v-if="path && path !== 'login' && path !== 'college'
         && path !== 'add-college'">
           <md-button class="md-icon-button" v-on:click="exitGroup()">
