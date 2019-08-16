@@ -1,12 +1,12 @@
 <template>
   <div class="md-layout-item">
     <h3 align="center">Pick your Group</h3>
-    <!--<md-autocomplete v-model="collegeName" :md-options="colleges">
+    <md-autocomplete v-model="collage" :md-options="colleges">
       <label>Select College</label>
-      <template slot="md-autocomplete-item" slot-scope="{ item, term }">
+      <!-- <template slot="md-autocomplete-item" slot-scope="{ item, term }">
         <md-highlight-text :md-term="collegeName" @click="selectedCollege(item)">{{ item.name }}</md-highlight-text>
-      </template>
-    </md-autocomplete> -->
+      </template> -->
+    </md-autocomplete>
     <md-field>
       <md-select v-model="college" name="college" id="college" placeholder="Select Group">
         <md-option v-for="(option, index) in colleges" v-bind:value="option.name" :key="index">
