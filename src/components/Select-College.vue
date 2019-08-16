@@ -1,19 +1,9 @@
 <template>
   <div class="md-layout-item">
     <h3 align="center">Pick your Group</h3>
-    <!--<md-autocomplete v-model="collegeName" :md-options="colleges">
+    <md-autocomplete v-model="college" :md-options="collegeNames">
       <label>Select College</label>
-      <template slot="md-autocomplete-item" slot-scope="{ item, term }">
-        <md-highlight-text :md-term="collegeName" @click="selectedCollege(item)">{{ item.name }}</md-highlight-text>
-      </template>
-    </md-autocomplete> -->
-    <md-field>
-      <md-select v-model="college" name="college" id="college" placeholder="Select Group">
-        <md-option v-for="(option, index) in colleges" v-bind:value="option.name" :key="index">
-          {{option.name}}
-        </md-option>
-      </md-select>
-    </md-field>
+    </md-autocomplete>
     <div align="center">
       <md-button class="md-accent md-raised" v-on:click="onSubmit()" :disabled="college ? false : true">Enter</md-button>
       <router-link to="/add-college">
@@ -37,6 +27,7 @@ export default {
     collegeId: '',
     college: '',
     colleges: [],
+    collegeNames: [],
     buttonFlag: true,
     showSnackbar: false,
     errMessage: ''
@@ -54,6 +45,7 @@ export default {
     }
     axios.get(URL + '/group?sort=-createdAt', options).then((res) => {
       this.colleges = res.data
+      this.colleges.forEach((collegeName) => { this.collegeNames.push(collegeName.name) })
     }).catch((err) => {
       if (err.message) {
         this.errMessage = err.message
