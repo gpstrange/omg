@@ -67,6 +67,12 @@ export default {
       this.showSnackbar = true
     }
     const token = localStorage.getItem('token')
+    if (!token) {
+      errMessage = 'Session Expired, Please login again!'
+      localStorage.clear()
+      this.$router.push({path: 'login'})
+      return
+    }
     const options = {
       headers: {
         Authorization: `Bearer ${token}`

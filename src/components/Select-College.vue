@@ -36,8 +36,15 @@ export default {
     const groupId = localStorage.getItem('groupId')
     if (groupId) {
       this.$router.push({path: 'home'})
+      return
     }
     const token = localStorage.getItem('token')
+    if (!token) {
+      errMessage = 'Session Expired, Please login again!'
+      localStorage.clear()
+      this.$router.push({path: 'login'})
+      return
+    }
     const options = {
       headers: {
         Authorization: `Bearer ${token}`
