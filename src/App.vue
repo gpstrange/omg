@@ -10,14 +10,27 @@
         </span>
         <div class="md-toolbar-section-end" v-if="path && path !== 'login' && path !== 'college'
         && path !== 'add-college'">
-          <md-button class="md-icon-button" v-on:click="exitGroup()">
-            <md-icon>exit_to_app</md-icon>
-          </md-button>
           <router-link to="/add-feed">
             <md-button class="md-icon-button">
               <md-icon>edit</md-icon>
             </md-button>
           </router-link>
+          <md-menu>
+          <md-button class="md-icon-button" md-menu-trigger>
+            <md-icon>more_vert</md-icon>
+          </md-button>
+
+            <md-menu-content>
+              <md-menu-item v-on:click="exitGroup()">
+                <md-icon style="margin: 0px; margin-right: 10px">exit_to_app</md-icon>
+                Exit Group
+              </md-menu-item>
+              <md-menu-item v-on:click="logout()">
+                <md-icon style="margin: 0px; margin-right: 10px">power_settings_new</md-icon>
+                Logout
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
           <!-- <router-link v-if="!college" to="/add-college">
             <md-button class="md-icon-button">
               <md-icon>add</md-icon>
@@ -86,6 +99,10 @@ export default {
           }
           this.showSnackbar = true
         })
+    },
+    logout () {
+      localStorage.clear()
+      this.$router.push('login')
     }
   }
   // data () {
@@ -102,5 +119,8 @@ export default {
 <style>
   .md-app {
     border: 1px solid rgba(#000, .12);
+  }
+  .md-list-item-content {
+    justify-content: flex-start;
   }
 </style>

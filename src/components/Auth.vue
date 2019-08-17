@@ -39,7 +39,13 @@ export default {
     errMessage: ''
   }),
   beforeCreate () {
-    localStorage.clear()
+    const token = localStorage.getItem('token')
+    const groupId = localStorage.getItem('groupId')
+    if (token && groupId) {
+      this.$router.push({path: 'home'})
+    } else if (token) {
+      this.$router.push({path: 'college'})
+    }
   },
   methods: {
     onSubmit (event) {

@@ -7,7 +7,7 @@
       </md-avatar>
 
       <div class="md-title">{{item.username}}</div>
-      <div class="md-subhead">Coimbatore, India</div>
+      <div class="md-subhead">Tamilnadu, India</div>
     </md-card-header>
 
     <md-card-content>
