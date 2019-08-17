@@ -68,7 +68,7 @@ export default {
     }
     const token = localStorage.getItem('token')
     if (!token) {
-      errMessage = 'Session Expired, Please login again!'
+      this.errMessage = 'Session Expired, Please login again!'
       localStorage.clear()
       this.$router.push({path: 'login'})
       return
