@@ -63,8 +63,8 @@ export default {
         localStorage.setItem('user', JSON.stringify(res.data.user))
         this.$router.push('college')
       }).catch((err) => {
-        if (err.message) {
-          this.errMessage = err.message
+        if (err.response && err.response.data && err.response.data.message) {
+          this.errMessage = err.response.data.message
         } else {
           this.errMessage = 'Something went wrong'
         }

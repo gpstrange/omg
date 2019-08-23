@@ -54,8 +54,8 @@ export default {
       this.colleges = res.data
       this.colleges.forEach((collegeName) => { this.collegeNames.push(collegeName.name) })
     }).catch((err) => {
-      if (err.message) {
-        this.errMessage = err.message
+      if (err.response && err.response.data && err.response.data.message) {
+        this.errMessage = err.response.data.message
       } else {
         this.errMessage = 'Something went wrong'
       }
@@ -87,8 +87,8 @@ export default {
       axios.patch(URL + '/user/' + userId, {groupId: id}, options).then((res) => {
         this.$router.push({path: 'home'})
       }).catch((err) => {
-        if (err.message) {
-          this.errMessage = err.message
+        if (err.response && err.response.data && err.response.data.message) {
+          this.errMessage = err.response.data.message
         } else {
           this.errMessage = 'Something went wrong'
         }

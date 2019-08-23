@@ -92,8 +92,8 @@ export default {
           // item.likesNumber = item.likesNumber + 1
           // this.gossips[i] = res.data.gossip
         }).catch((err) => {
-          if (err.message) {
-            this.errMessage = err.message
+          if (err.response && err.response.data && err.response.data.message) {
+            this.errMessage = err.response.data.message
           } else {
             this.errMessage = 'Something went wrong'
           }

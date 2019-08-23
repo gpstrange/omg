@@ -54,9 +54,8 @@ export default {
           this.$router.push('home')
         })
       }).catch((err) => {
-        console.log(err)
-        if (err.message) {
-          this.errMessage = err.message
+        if (err.response && err.response.data && err.response.data.message) {
+          this.errMessage = err.response.data.message
         } else {
           this.errMessage = 'Something went wrong'
         }
