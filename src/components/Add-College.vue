@@ -47,7 +47,6 @@ export default {
         }
       }
       axios.post(URL + '/group', {name: this.group}, options).then((res) => {
-        console.log(res)
         payload.groupId = res.data._id
         localStorage.setItem('groupId', res.data._id)
         axios.post(URL + '/gossip', payload, options).then(res => {
@@ -56,6 +55,10 @@ export default {
       }).catch((err) => {
         if (err.response && err.response.data && err.response.data.message) {
           this.errMessage = err.response.data.message
+          if (err.response.data.code === 'TOKEN_EXPIRED') {
+            localStorage.clear()
+            this.$router.push({path: 'login'})
+          }
         } else {
           this.errMessage = 'Something went wrong'
         }

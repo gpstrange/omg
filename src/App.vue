@@ -94,6 +94,10 @@ export default {
         }).catch((err) => {
           if (err.response && err.response.data && err.response.data.message) {
             this.errMessage = err.response.data.message
+            if (err.response.data.code === 'TOKEN_EXPIRED') {
+              localStorage.clear()
+              this.$router.push({path: 'login'})
+            }
           } else {
             this.errMessage = 'Something went wrong'
           }
