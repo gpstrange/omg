@@ -1,32 +1,42 @@
 <template>
-  <div class="page-container">
+  <div>
+  <div class="md-elevation-4" style=" position: absolute; top: 56px; width: 100%; background-color: #ccc; display: flex; justify-content: center; z-index: 1">{{groupName}}</div>
+  <div class="page-container" style="margin-top: 25px">
     <md-card v-for="(item, index) in gossips" style="margin-bottom: 20px" :key="index">
-    <md-card-header>
-      <md-avatar class="md-avatar-icon md-medium md-accent">
-        <md-icon>person_outline</md-icon>
-      </md-avatar>
-
-      <div class="md-title">{{item.username}}</div>
-      <div class="md-subhead">Tamilnadu, India</div>
+    <md-card-header style="padding: 5px 16px;">
+      <div class="md-title" style="font-size: 20px; font-weight: 500">{{item.username}}</div>
     </md-card-header>
 
     <md-card-content>
         {{item.message}}
     </md-card-content>
-
-    <md-card-actions md-alignment="right">
-      <md-button v-if="item.userLiked" v-on:click="unlike(item, index)" class="md-accent md-raised" style="margin-right: 5px">
-        <md-icon>thumb_up</md-icon>
-        {{item.likesNumber}}
-      </md-button>
-      <md-button v-if="!item.userLiked" v-on:click="like(item, index)" class="md-accent" style="margin-right: 5px">
-        <md-icon>thumb_up</md-icon>
-        {{item.likesNumber}}
-      </md-button>
-      <md-button class="md-primary" v-on:click="showComments(item)">
-        <md-icon>add_comment</md-icon>
-        Comments {{item.commentsCount}}
-      </md-button>
+    <div class="md-subhead" style="margin-left: 16px">
+      {{item.likesNumber}} likes - {{item.commentsCount}} Comments
+    </div>
+    <hr style="margin: 5px 7px; margin-bottom: 0px; border-top: 1px solid #ccc;">
+    <md-card-actions>
+      <div style="width: 50%">
+        <md-button v-if="item.userLiked" v-on:click="unlike(item, index)" class="md-accent" style="margin-right: 5px">
+          <span style="display:flex; align-items: center">
+            <i class="material-icons" style="margin-right: 5px">thumb_up</i>
+            Like
+          </span>
+        </md-button>
+        <md-button v-if="!item.userLiked" v-on:click="like(item, index)" class="md-accent" style="margin-right: 5px">
+          <span style="display:flex; align-items: center">
+            <i class="material-icons-outlined" style="margin-right: 5px">thumb_up</i>
+            Like
+          </span>
+        </md-button>
+      </div>
+      <div style="width: 50%">
+        <md-button class="md-primary" v-on:click="showComments(item)">
+          <span style="display:flex; align-items: center">
+            <i class="material-icons-outlined" style="margin-right: 5px">comment</i>
+            Comment
+          </span>
+        </md-button>
+      </div>
     </md-card-actions>
     </md-card>
     <div>
@@ -35,7 +45,14 @@
     </md-snackbar>
     </div>
   </div>
+  </div>
 </template>
+
+<style>
+  div .md-content {
+    padding: 0px !important;
+  }
+</style>
 
 <script>
 import axios from 'axios'
@@ -45,7 +62,8 @@ export default {
   data: () => ({
     gossips: [],
     showSnackbar: false,
-    errMessage: ''
+    errMessage: '',
+    groupName: ''
   }),
   created () {
     const groupId = localStorage.getItem('groupId')
@@ -65,6 +83,13 @@ export default {
         Authorization: `Bearer ${token}`
       }
     }
+    axios.get(URL + '/group/' + groupId, options)
+      .then(res => {
+        console.log(res.data)
+        this.groupName = res.data.name
+      }).catch((err) => {
+        console.log(err)
+      })
     axios.get(URL + '/get-gossip/' + groupId, options)
       .then(res => {
         this.gossips = res.data
