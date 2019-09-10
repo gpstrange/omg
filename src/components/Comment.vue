@@ -23,7 +23,7 @@
       </md-button>
     </md-card-actions>
     </md-card>
-    <h2 style="margin-left: 20px; font-family: sans-serif;">
+    <h2 v-if="comments && comments.length" style="margin-left: 20px; font-family: sans-serif;">
       Comments
     </h2>
     <md-card v-for="(item, index) in comments" :key="index" style="margin-bottom: 20px">

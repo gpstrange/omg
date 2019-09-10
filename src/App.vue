@@ -1,5 +1,12 @@
 <template>
-  <div id="app" style="background-color: #ccc">
+  <div id="app">
+    <div v-if="path && path === 'home'" style="position: fixed; bottom: 10px; right: 10px; z-index: 20">
+      <router-link to="/add-feed">
+        <md-button class="md-fab md-primary">
+          <md-icon>add</md-icon>
+        </md-button>
+      </router-link>
+    </div>
     <md-app md-mode="reveal">
       <md-app-toolbar class="md-primary">
         <span class="md-title">
@@ -9,15 +16,10 @@
           Oh My Gossip!!
         </span>
         <div class="md-toolbar-section-end" v-if="path && (path === 'add-feed' || path === 'comments' || path === 'home')">
-          <router-link to="/add-feed">
-            <md-button class="md-icon-button">
-              <md-icon>edit</md-icon>
-            </md-button>
-          </router-link>
           <md-menu>
-          <md-button class="md-icon-button" md-menu-trigger>
-            <md-icon>more_vert</md-icon>
-          </md-button>
+            <md-button class="md-icon-button" md-menu-trigger>
+              <md-icon>more_vert</md-icon>
+            </md-button>
 
             <md-menu-content>
               <md-menu-item v-on:click="exitGroup()">
@@ -30,18 +32,13 @@
               </md-menu-item>
             </md-menu-content>
           </md-menu>
-          <!-- <router-link v-if="!college" to="/add-college">
-            <md-button class="md-icon-button">
-              <md-icon>add</md-icon>
-            </md-button>
-          </router-link>-->
         </div>
-        <div v-if="path && (path === 'add-feed' || path === 'comments' || path === 'home')" class="md-elevation-4" style=" position: absolute; top: 56px; width: 100%; background-color: #64dd17; display: flex; justify-content: center; z-index: 1; margin-left: -8px; color: black; height: 45%;font-size: 16px; align-items: center;">
+        <div v-if="groupName && path && (path === 'add-feed' || path === 'comments' || path === 'home')" class="md-elevation-4" style=" position: absolute; top: 56px; width: 100%; background-color: #64dd17; display: flex; justify-content: center; margin-left: -8px; color: black; height: 45%;font-size: 16px; align-items: center;">
           {{groupName}}
         </div>
       </md-app-toolbar>
 
-      <md-app-content style="background-color: rgb(230, 230, 230)">
+      <md-app-content>
         <router-view></router-view>
       </md-app-content>
     </md-app>
@@ -63,15 +60,27 @@ export default {
     path: '',
     showSnackbar: false,
     errMessage: '',
-    groupName: ''
+    groupName: '',
+    bgColor: '',
+    height: ''
   }),
   watch: {
     $route (to, from) {
       this.path = to.path.replace('/', '')
+      // if (this.path === 'home' || this.path === 'comments') {
+      //   this.bgColor = 'rgb(230, 230, 230)'
+      // } else {
+      //   this.bgColor = 'white'
+      // }
     }
   },
-  mounted () {
+  beforeMount () {
     this.path = this.$route.path.replace('/', '')
+    // this.height = window.innerHeight
+    // console.log(this.height)
+    // if (this.path === 'home' || this.path === 'comments') {
+    //   this.bgColor = 'rgb(230, 230, 230)'
+    // }
     if (this.path === 'login' || this.path === 'add-college' || this.path === 'college') {
       return
     }
