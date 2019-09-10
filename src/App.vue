@@ -164,4 +164,7 @@ export default {
   .md-list-item-content {
     justify-content: flex-start;
   }
+  div {
+    word-break: break-word;
+  }
 </style>
