@@ -1,5 +1,5 @@
 <template>
-  <div id="add-feed">
+  <div id="add-feed" style="padding-top: 30px">
     <form>
       <md-field>
         <label style="font-size: 12px">OMG!!🤫</label>

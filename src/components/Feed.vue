@@ -1,13 +1,16 @@
 <template>
-  <div>
-  <div class="md-elevation-4" style=" position: absolute; top: 56px; width: 100%; background-color: #ccc; display: flex; justify-content: center; z-index: 1">{{groupName}}</div>
-  <div class="page-container" style="margin-top: 25px">
+  <div class="page-container" style="padding-top: 30px">
     <md-card v-for="(item, index) in gossips" style="margin-bottom: 20px" :key="index">
-    <md-card-header style="padding: 5px 16px;">
-      <div class="md-title" style="font-size: 20px; font-weight: 500">{{item.username}}</div>
+    <md-card-header style="padding: 8px 14px 3px;">
+      <div v-if="username && username !== item.username" style="font-size: 20px; font-weight: 500">
+        {{item.username}}
+      </div>
+      <div v-if="username && username === item.username" style="color: #64dd17; font-size: 20px; font-weight: 500">
+        You
+      </div>
     </md-card-header>
 
-    <md-card-content>
+    <md-card-content style="padding-bottom: 10px">
         {{item.message}}
     </md-card-content>
     <div class="md-subhead" style="margin-left: 16px">
@@ -19,7 +22,7 @@
         <md-button v-if="item.userLiked" v-on:click="unlike(item, index)" class="md-accent" style="margin-right: 5px">
           <span style="display:flex; align-items: center">
             <i class="material-icons" style="margin-right: 5px">thumb_up</i>
-            Like
+            Liked
           </span>
         </md-button>
         <md-button v-if="!item.userLiked" v-on:click="like(item, index)" class="md-accent" style="margin-right: 5px">
@@ -45,14 +48,7 @@
     </md-snackbar>
     </div>
   </div>
-  </div>
 </template>
-
-<style>
-  div .md-content {
-    padding: 0px !important;
-  }
-</style>
 
 <script>
 import axios from 'axios'
@@ -63,7 +59,8 @@ export default {
     gossips: [],
     showSnackbar: false,
     errMessage: '',
-    groupName: ''
+    groupName: '',
+    username: ''
   }),
   created () {
     const groupId = localStorage.getItem('groupId')
@@ -78,18 +75,13 @@ export default {
       this.$router.push({path: 'login'})
       return
     }
+    const user = JSON.parse(localStorage.getItem('user'))
+    this.username = user.username
     const options = {
       headers: {
         Authorization: `Bearer ${token}`
       }
     }
-    axios.get(URL + '/group/' + groupId, options)
-      .then(res => {
-        console.log(res.data)
-        this.groupName = res.data.name
-      }).catch((err) => {
-        console.log(err)
-      })
     axios.get(URL + '/get-gossip/' + groupId, options)
       .then(res => {
         this.gossips = res.data

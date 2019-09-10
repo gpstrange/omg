@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" style="background-color: #ccc">
     <md-app md-mode="reveal">
       <md-app-toolbar class="md-primary">
         <span class="md-title">
@@ -8,8 +8,7 @@
           </md-avatar>
           Oh My Gossip!!
         </span>
-        <div class="md-toolbar-section-end" v-if="path && path !== 'login' && path !== 'college'
-        && path !== 'add-college'">
+        <div class="md-toolbar-section-end" v-if="path && (path === 'add-feed' || path === 'comments' || path === 'home')">
           <router-link to="/add-feed">
             <md-button class="md-icon-button">
               <md-icon>edit</md-icon>
@@ -37,9 +36,12 @@
             </md-button>
           </router-link>-->
         </div>
+        <div v-if="path && (path === 'add-feed' || path === 'comments' || path === 'home')" class="md-elevation-4" style=" position: absolute; top: 56px; width: 100%; background-color: #64dd17; display: flex; justify-content: center; z-index: 1; margin-left: -8px; color: black; height: 45%;font-size: 16px; align-items: center;">
+          {{groupName}}
+        </div>
       </md-app-toolbar>
 
-      <md-app-content>
+      <md-app-content style="background-color: rgb(230, 230, 230)">
         <router-view></router-view>
       </md-app-content>
     </md-app>
@@ -60,7 +62,8 @@ export default {
   data: () => ({
     path: '',
     showSnackbar: false,
-    errMessage: ''
+    errMessage: '',
+    groupName: ''
   }),
   watch: {
     $route (to, from) {
@@ -69,6 +72,28 @@ export default {
   },
   mounted () {
     this.path = this.$route.path.replace('/', '')
+    if (this.path === 'login' || this.path === 'add-college' || this.path === 'college') {
+      return
+    }
+    const token = localStorage.getItem('token')
+    if (!token) {
+      this.errMessage = 'Session Expired, Please login again!'
+      localStorage.clear()
+      this.$router.push({path: 'login'})
+      return
+    }
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+    const groupId = localStorage.getItem('groupId')
+    axios.get(URL + '/group/' + groupId, options)
+      .then(res => {
+        this.groupName = res.data.name
+      }).catch((err) => {
+        console.log(err)
+      })
   },
   methods: {
     exitGroup () {
@@ -121,6 +146,9 @@ export default {
 </script>
 
 <style>
+  #app {
+    height:
+  }
   .md-app {
     border: 1px solid rgba(#000, .12);
   }

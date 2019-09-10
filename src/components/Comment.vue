@@ -1,20 +1,20 @@
 <template>
-  <div class="page-container">
-    <md-card style="margin-bottom: 20px">
-    <md-card-header>
-      <md-avatar class="md-avatar-icon md-medium md-accent">
-        <md-icon>person_outline</md-icon>
-      </md-avatar>
+  <div class="page-container" style="padding-top: 30px">
+    <md-card style="margin: 0px; margin-bottom: 20px">
+      <md-card-header style="padding: 8px 14px 3px;">
+        <div v-if="username && username !== gossip.username" style="font-size: 20px; font-weight: 500">
+          {{gossip.username}}
+        </div>
+        <div v-if="username && username === gossip.username" style="color: #64dd17; font-size: 20px; font-weight: 500">
+          You
+        </div>
+      </md-card-header>
 
-      <div class="md-title">{{gossip && gossip.username}}</div>
-      <div class="md-subhead">Coimbatore, India</div>
-    </md-card-header>
+      <md-card-content style="padding-bottom: 0px">
+          {{gossip.message}}
+      </md-card-content>
 
-    <md-card-content>
-        {{gossip.message}}
-    </md-card-content>
-
-    <md-card-actions md-alignment="left">
+    <md-card-actions md-alignment="left" style="padding-top: 0px">
       <md-field>
         <md-input placeholder="Enter comment" style="margin: 0 8px" v-model="newComment"></md-input>
       </md-field>
@@ -23,17 +23,20 @@
       </md-button>
     </md-card-actions>
     </md-card>
+    <h2 style="margin-left: 20px; font-family: sans-serif;">
+      Comments
+    </h2>
     <md-card v-for="(item, index) in comments" :key="index" style="margin-bottom: 20px">
-        <md-card-header>
-            <md-avatar class="md-avatar-icon md-medium md-accent">
-                <md-icon>person_outline</md-icon>
-            </md-avatar>
+        <md-card-header style="padding: 8px 14px 3px;">
+        <div v-if="username && username !== item.username" style="font-size: 20px; font-weight: 500">
+          {{item.username}}
+        </div>
+        <div v-if="username && username === item.username" style="color: #64dd17; font-size: 20px; font-weight: 500">
+          You
+        </div>
+      </md-card-header>
 
-            <div class="md-title">{{item && item.username}}</div>
-            <div class="md-subhead">Coimbatore, India</div>
-        </md-card-header>
-
-        <md-card-content>
+        <md-card-content style="padding-bottom: 8px">
             {{item && item.message}}
         </md-card-content>
     </md-card>
@@ -55,9 +58,10 @@ export default {
     comments: [],
     newComment: '',
     showSnackbar: false,
-    errMessage: ''
+    errMessage: '',
+    username: ''
   }),
-  beforeCreate () {
+  created () {
     const showErr = (err) => {
       if (err.message) {
         this.errMessage = err.message
@@ -82,6 +86,8 @@ export default {
         Authorization: `Bearer ${token}`
       }
     }
+    const user = JSON.parse(localStorage.getItem('user'))
+    this.username = user.username
     const gossipId = this.$route.query.gossipId
     axios.get(URL + '/gossip/' + gossipId, options)
       .then(res => {
