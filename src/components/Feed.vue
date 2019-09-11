@@ -1,6 +1,6 @@
 <template>
   <div class="page-container" style="padding-top: 30px">
-    <md-card v-for="(item, index) in gossips" style="margin-bottom: 20px" :key="index">
+    <md-card v-for="(item, index) in gossips" style="margin: 0px; margin-bottom: 20px" :key="index">
     <md-card-header style="padding: 8px 14px 3px;">
       <div v-if="username && username !== item.username" style="font-size: 20px; font-weight: 500">
         {{item.username}}
@@ -17,8 +17,8 @@
       {{item.likesNumber}} likes - {{item.commentsCount}} Comments
     </div>
     <hr style="margin: 5px 7px; margin-bottom: 0px; border-top: 1px solid #ccc;">
-    <md-card-actions>
-      <div style="width: 50%">
+    <md-card-actions style="justify-content: space-between;">
+      <div>
         <md-button v-if="item.userLiked" v-on:click="unlike(item, index)" class="md-accent" style="margin-right: 5px">
           <span style="display:flex; align-items: center">
             <i class="material-icons" style="margin-right: 5px">thumb_up</i>
@@ -32,11 +32,19 @@
           </span>
         </md-button>
       </div>
-      <div style="width: 50%">
+      <div>
         <md-button class="md-primary" v-on:click="showComments(item)">
           <span style="display:flex; align-items: center">
             <i class="material-icons-outlined" style="margin-right: 5px">comment</i>
             Comment
+          </span>
+        </md-button>
+      </div>
+      <div>
+        <md-button class="md-primary" v-on:click="share(item)">
+          <span style="display:flex; align-items: center">
+            <i class="material-icons-outlined" style="margin-right: 5px">reply</i>
+            share
           </span>
         </md-button>
       </div>
@@ -157,6 +165,20 @@ export default {
           }
           this.showSnackbar = true
         })
+    },
+    share (gossip) {
+      console.log('https://ohmygossip.in/#/comments?gossipId=' + gossip._id)
+      if (!('share' in window.navigator)) {
+        this.errMessage = 'Sorry. This feature is only available in Chrome for Android'
+        return
+      }
+      window.navigator.share({
+        title: 'OMG!',
+        text: 'Checkout OMG!, world`s first Gossiping platform! -- It rocks!',
+        url: 'https://ohmygossip.in/#/comments?gossipId=' + gossip._id
+      })
+        .then(() => console.log('Successful share'))
+        .catch(error => console.log('Error sharing:', error))
     }
   }
 }
