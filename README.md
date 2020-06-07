@@ -1,4 +1,4 @@
-# test
+# Oh My Gossip
 
 > A Vue.js project
 
